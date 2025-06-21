@@ -1,1 +1,5 @@
-# dynamic_pruning
+# Dynamic-Pruning
+
+Abstract- Dynamic pruning is an adaptive technique used to reduce the computational and memory complexity of deep neural networks during inference or training by selectively removing less important weights, neurons, or connections in a context-sensitive manner. Unlike static pruning, where the pruning pattern is fixed post-training, dynamic pruning adjusts the sparsity structure on-the-fly based on the input, intermediate activations, or optimization signals.
+
+This flexibility allows models to preserve or even improve performance while significantly reducing redundancy, especially in resource-constrained environments. Dynamic pruning methods are commonly guided by attention mechanisms, gating functions, or learned policies, and they can be applied in convolutional, recurrent, or transformer-based architectures. Recent advances demonstrate its effectiveness in tasks like image recognition, natural language processing, and multimodal learning, offering a promising direction for efficient and scalable deep learning
