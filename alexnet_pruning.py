@@ -57,15 +57,22 @@ class EarlyStopping:
         torch.save(model.state_dict(),basepath+'/CheckPoints/'+self.filename+'.pt')
         self.val_loss_min = val_loss
 
-def get_data_loaders():
-  transform = transforms.Compose([transforms.Resize((32,32)),transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])])
-  cifar10_train = torchvision.datasets.CIFAR10('../data',transform=transform,train=True,download=True)
-  cifar10_test = torchvision.datasets.CIFAR10('../data',transform=transform,train=False,download=True)
-  data_loader_train = torch.utils.data.DataLoader(cifar10_train, batch_size=1024, shuffle=True, num_workers=8)
-  data_loader_test = torch.utils.data.DataLoader(cifar10_test, batch_size=2048, shuffle=True, num_workers=8)
+def get_data_loaders(dataset='CIFAR10'):
+  if dataset == 'CIFAR10':
+    transform = transforms.Compose([transforms.Resize((32,32)),transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])])
+    train_dataset = torchvision.datasets.CIFAR10('../data',transform=transform,train=True,download=True)
+    test_dataset = torchvision.datasets.CIFAR10('../data',transform=transform,train=False,download=True)
+  elif dataset == 'MNIST':
+    transform = transforms.Compose([transforms.Resize((32,32)),transforms.Grayscale(num_output_channels=3),transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])])
+    train_dataset = torchvision.datasets.MNIST('../data',transform=transform,train=True,download=True)
+    test_dataset = torchvision.datasets.MNIST('../data',transform=transform,train=False,download=True)
+    
+  data_loader_train = torch.utils.data.DataLoader(train_dataset, batch_size=1024, shuffle=True, num_workers=8)
+  data_loader_test = torch.utils.data.DataLoader(test_dataset, batch_size=2048, shuffle=True, num_workers=8)
   return(data_loader_train,data_loader_test)
 
-data_loader_train,data_loader_test = get_data_loaders()
+dataset_choice = 'CIFAR10' # Change to 'MNIST' to validate on MNIST
+data_loader_train,data_loader_test = get_data_loaders(dataset=dataset_choice)
 
 def defineMasks():
   mask_conv1 = torch.ones(64,3,3,3)
